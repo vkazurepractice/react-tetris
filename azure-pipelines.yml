@@ -9,13 +9,38 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+stages:
+  - stage: NoejsBuild
+    displayName: nodejs_build
+    jobs:
+    - job: nodejs_build
+      pool: 
+        vmImage: $(vmImageName)
+      steps:
+        - task: NodeTool@0
+          inputs:
+            versionSpec: '14.x'
+          displayName: 'Install Node.js'
+        - script: |
+            npm install
+            npm run build
+          displayName: 'npm install and build'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+  - stage: Semgrep
+    displayName: semgrep_scan
+    jobs:
+    - job: semgrep_scan
+      pool: 
+        vmImage: $(vmImageName)
+      steps:
+        - script: |
+            python3 -m pip install semgrep  
+          displayName: 'Install Semgrep ClI'
+          
+        - bash: semgrep scan --config=auto --error --severity ERROR $(System.DefaultWorkingDirectory)/. 
+          displayName: 'Semgrep Scan'
+          name: 'SemgrepScan'
+
+  
+
+    
