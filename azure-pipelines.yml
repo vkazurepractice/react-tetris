@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: NoejsBuild
+  - stage: NodejsBuild
     displayName: nodejs_build
     jobs:
     - job: nodejs_build
