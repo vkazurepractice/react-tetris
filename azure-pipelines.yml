@@ -3,12 +3,14 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-- master
-
-pool:
+variables:
   vmImage: 'ubuntu-latest'
 
+trigger:
+  branches:
+    include:
+    - main
+    
 stages:
   - stage: NodejsBuild
     displayName: nodejs_build
