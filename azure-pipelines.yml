@@ -15,7 +15,7 @@ stages:
     jobs:
     - job: nodejs_build
       pool: 
-        vmImage: $(vmImageName)
+        vmImage: $(vmImage)
       steps:
         - task: NodeTool@0
           inputs:
@@ -31,7 +31,7 @@ stages:
     jobs:
     - job: semgrep_scan
       pool: 
-        vmImage: $(vmImageName)
+        vmImage: $(vmImage)
       steps:
         - script: |
             python3 -m pip install semgrep  
